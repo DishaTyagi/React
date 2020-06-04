@@ -2,81 +2,66 @@
 
 console.log("app.js is running!");
 
-const object = {
+const app = {
     title: 'Dish',
-    // subtitle: 'dish is a good girl',
-    options: ['one', 'two']
+    subtitle: 'dish is a good girl',
+    options: []
 }
 
-//JSX
-const template = (        //this paranthesis is not actually required. just for clarity purposes.
-    <div>
-        <h1>{object.title}</h1>
-        {object.subtitle && <p>{object.subtitle}</p>}
-        <p>{object.options.length > 0 ? 'Here are your options' : 'No options'}</p>
-        <ol>
-            <li>List item 1</li>
-            <li>list item 2</li>
-        </ol>
-    </div>
-);
+const onFormSubmit = (e) => {
+    e.preventDefault();     //prevents whole page to reload when form button is clicked.
+    
+    //to access the form input element
+    const option = e.target.elements.option.value;
 
+    if(option){ //to make sure that the input is not empty
+        //push into app options
+        app.options.push(option);
+        console.log(option);
+        
+        e.target.elements.option.value = '';
+        reRender();
 
-// const user = {
-//     name: 'Disha',
-//     age: 21,
-//     // location: 'vaishali'
-// }
-
-// function getLocation(location){
-//     if(location){
-//         return <p>Location: {location}</p>
-//     }
-//     //if location does not exist, then don't print anthing regarding location.
-// }
-
-// const templateTwo = (
-  
-//     // jsx expressions must have a parent element. if we dont add this <div> as a parent element, there'll be an err
-//     <div>           
-//         <h1>{user.name}</h1>
-//         <p>Age: {user.age}</p>
-//         {getLocation(user.location)}
-
-//         {/*<h1>this is my h1 inside a pair of {`{}`} in jsx expression</h1>*/}
-//     </div>
-// )
-
-
-//to understand events and attributes
-let count = 0;
-const addOne = ()=> {
-    count++;
-    reRender();
-};
-const deleteOne =() => {
-    count--;
-    reRender();
+    }
 }
-const reset = () => {
-    count = 0;
+
+const removeAll = () => {
+    app.options = [];
     reRender();
 }
 
 const appRoute = document.getElementById('appDiv');
 
-//after changing the count val, updated count is not rendered. So, we have to render templateTwo initially and after updating the count.
+let keyCount = 0;
+
 const reRender = () => {
-    const templateTwo = (
+    //JSX
+    const template = (        //this paranthesis is not actually required. just for clarity purposes.
         <div>
-            <h1>count: {count}</h1>
-            <button onClick = {addOne}>Increment</button>
-            <button onClick = {deleteOne}>Decrement</button>
-            <button onClick = {reset}>Reset</button>
+            <h1>{app.title}</h1>
+            {app.subtitle && <p>{app.subtitle}</p>}
+            <p>{app.options.length > 0 ? 'Here are your options' : 'No options'}</p>
+            <p>{app.options.length}</p>
+
+            <button onClick={removeAll}>Remove All</button>
+            
+            <ol>
+            {   
+                app.options.map((option) => <li key={keyCount++}>{option}</li>)
+            }
+            </ol>
+            
+            <form onSubmit={onFormSubmit}>          
+                <input type="text" name="option"></input>
+                <button>Add Option</button>
+            </form>
         </div>
     );
-    ReactDOM.render(templateTwo, appRoute);      //1st -> what to render, 2nd param-> where to render
+
+    ReactDOM.render(template, appRoute);      //1st -> what to render, 2nd param-> where to render
 
 }
+
+
 
 reRender();
