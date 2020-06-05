@@ -1,45 +1,23 @@
 'use strict';
 
-// this file inside src folder will be our source code. the app.js inside public folder contains the babel's generated code
+console.log("visibility toggle is running");
 
-console.log("app.js is running!");
+var visibility = false;
 
 var app = {
-    title: 'Dish',
-    subtitle: 'dish is a good girl',
-    options: []
-};
-
-var onFormSubmit = function onFormSubmit(e) {
-    e.preventDefault(); //prevents whole page to reload when form button is clicked.
-
-    //to access the form input element
-    var option = e.target.elements.option.value;
-
-    if (option) {
-        //to make sure that the input is not empty
-        //push into app options
-        app.options.push(option);
-        console.log(option);
-
-        e.target.elements.option.value = '';
-        reRender();
-    }
-};
-
-var removeAll = function removeAll() {
-    app.options = [];
-    reRender();
+    title: 'Visibility Toggle',
+    textString: ''
 };
 
 var appRoute = document.getElementById('appDiv');
 
-var keyCount = 0;
+var visibilityToggle = function visibilityToggle() {
+    visibility = !visibility; //toggling
+    render();
+};
 
-var reRender = function reRender() {
-    //JSX
-    var template = //this paranthesis is not actually required. just for clarity purposes.
-    React.createElement(
+var render = function render() {
+    var template = React.createElement(
         'div',
         null,
         React.createElement(
@@ -47,50 +25,19 @@ var reRender = function reRender() {
             null,
             app.title
         ),
-        app.subtitle && React.createElement(
-            'p',
-            null,
-            app.subtitle
-        ),
-        React.createElement(
-            'p',
-            null,
-            app.options.length > 0 ? 'Here are your options' : 'No options'
-        ),
-        React.createElement(
-            'p',
-            null,
-            app.options.length
-        ),
         React.createElement(
             'button',
-            { onClick: removeAll },
-            'Remove All'
+            { onClick: visibilityToggle },
+            visibility ? 'Hide details' : 'Show details'
         ),
-        React.createElement(
-            'ol',
+        visibility ? React.createElement(
+            'p',
             null,
-            app.options.map(function (option) {
-                return React.createElement(
-                    'li',
-                    { key: keyCount++ },
-                    option
-                );
-            })
-        ),
-        React.createElement(
-            'form',
-            { onSubmit: onFormSubmit },
-            React.createElement('input', { type: 'text', name: 'option' }),
-            React.createElement(
-                'button',
-                null,
-                'Add Option'
-            )
-        )
+            'Hi there! I am a text that needs to be shown'
+        ) : React.createElement('p', null)
     );
 
-    ReactDOM.render(template, appRoute); //1st -> what to render, 2nd param-> where to render
+    ReactDOM.render(template, appRoute);
 };
 
-reRender();
+render();

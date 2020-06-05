@@ -30,6 +30,15 @@ const removeAll = () => {
     reRender();
 }
 
+const onMakeDecision = () => {
+    //find the option that was selected and print it to the user
+
+    //generate a random number
+    const randomNum = Math.floor(Math.random() * app.options.length);        //returns number between 0 and 1
+    const option = app.options[randomNum];
+    alert(option);
+}
+
 const appRoute = document.getElementById('appDiv');
 
 let keyCount = 0;
@@ -41,8 +50,8 @@ const reRender = () => {
             <h1>{app.title}</h1>
             {app.subtitle && <p>{app.subtitle}</p>}
             <p>{app.options.length > 0 ? 'Here are your options' : 'No options'}</p>
-            <p>{app.options.length}</p>
 
+            <button disabled={app.options.length === 0 ? true : false} onClick={onMakeDecision}>What should I do?</button><br></br>
             <button onClick={removeAll}>Remove All</button>
             
             <ol>
@@ -61,7 +70,5 @@ const reRender = () => {
     ReactDOM.render(template, appRoute);      //1st -> what to render, 2nd param-> where to render
 
 }
-
-
 
 reRender();
