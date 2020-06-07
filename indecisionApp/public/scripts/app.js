@@ -8,53 +8,28 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Counter = function (_React$Component) {
-    _inherits(Counter, _React$Component);
+var VisibilityToggle = function (_React$Component) {
+    _inherits(VisibilityToggle, _React$Component);
 
-    function Counter(props) {
-        _classCallCheck(this, Counter);
+    function VisibilityToggle(prop) {
+        _classCallCheck(this, VisibilityToggle);
 
-        var _this = _possibleConstructorReturn(this, (Counter.__proto__ || Object.getPrototypeOf(Counter)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (VisibilityToggle.__proto__ || Object.getPrototypeOf(VisibilityToggle)).call(this, prop));
 
-        _this.handleAddOne = _this.handleAddOne.bind(_this);
-        _this.handleMinusOne = _this.handleMinusOne.bind(_this);
-        _this.handleReset = _this.handleReset.bind(_this);
+        _this.handleToggleVisibility = _this.handleToggleVisibility.bind(_this);
 
-        //component state
         _this.state = {
-            count: 0
+            visibility: false
         };
-
         return _this;
     }
 
-    _createClass(Counter, [{
-        key: 'handleAddOne',
-        value: function handleAddOne() {
-            // this.state.count = this.state.count + 1;
-            // console.log(this.state);        //incrementing but not changing the value of state in browser. to do that, use fn setState()
-            this.setState(function (prevState) {
-                {/* prevstate is an object here */}
-                return {
-                    count: prevState.count + 1
-                };
-            });
-        }
-    }, {
-        key: 'handleMinusOne',
-        value: function handleMinusOne() {
+    _createClass(VisibilityToggle, [{
+        key: 'handleToggleVisibility',
+        value: function handleToggleVisibility() {
             this.setState(function (prevState) {
                 return {
-                    count: prevState.count - 1
-                };
-            });
-        }
-    }, {
-        key: 'handleReset',
-        value: function handleReset() {
-            this.setState(function () {
-                return {
-                    count: 0
+                    visibility: !prevState.visibility
                 };
             });
         }
@@ -67,61 +42,53 @@ var Counter = function (_React$Component) {
                 React.createElement(
                     'h1',
                     null,
-                    'count: ',
-                    this.state.count
+                    'visibility Toggle'
                 ),
                 React.createElement(
                     'button',
-                    { onClick: this.handleAddOne },
-                    'Increment'
+                    { onClick: this.handleToggleVisibility },
+                    this.state.visibility ? 'Hide details' : 'Show Details'
                 ),
-                React.createElement(
-                    'button',
-                    { onClick: this.handleMinusOne },
-                    'Decrement'
-                ),
-                React.createElement(
-                    'button',
-                    { onClick: this.handleReset },
-                    'Reset'
-                )
+                this.state.visibility ? React.createElement(
+                    'p',
+                    null,
+                    'Hi there! I am a text that needs to be shown'
+                ) : React.createElement('p', null)
             );
         }
     }]);
 
-    return Counter;
+    return VisibilityToggle;
 }(React.Component);
 
-ReactDOM.render(React.createElement(Counter, null), document.getElementById('appDiv'));
+ReactDOM.render(React.createElement(VisibilityToggle, null), document.getElementById('appDiv'));
 
-// let count = 0;
-// const addOne = ()=> {
-//     count++;
-//     reRender();
-// };
-// const deleteOne =() => {
-//     count--;
-//     reRender();
-// }
-// const reset = () => {
-//     count = 0;
-//     reRender();
+// console.log("visibility toggle is running");
+
+// let visibility = false;
+
+// const app = {
+//     title: 'Visibility Toggle',
 // }
 
 // const appRoute = document.getElementById('appDiv');
 
-// //after changing the count val, updated count is not rendered. So, we have to render templateTwo initially and after updating the count.
-// const reRender = () => {
-//     const templateTwo = (
-//         <div>
-//             <h1>count: {count}</h1>
-//             <button onClick = {addOne}>Increment</button>
-//             <button onClick = {deleteOne}>Decrement</button>
-//             <button onClick = {reset}>Reset</button>
-//          </div>
-//     );
-//     ReactDOM.render(templateTwo, appRoute);      //1st -> what to render, 2nd param-> where to render
-
+// const visibilityToggle = () => {
+//     visibility = !visibility;   //toggling
+//     render()
 // }
 
-// reRender();
+// const render = () => {
+//     const template = (
+//         <div>
+//             <h1>{app.title}</h1>
+//             <button onClick={visibilityToggle}>{visibility ? 'Hide details' : 'Show details'}</button>
+//             {visibility ? <p>Hi there! I am a text that needs to be shown</p> : <p></p>}
+
+//         </div>        
+//     );
+
+//     ReactDOM.render(template, appRoute);
+// }
+
+// render();
