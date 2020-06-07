@@ -42,7 +42,14 @@ class Action extends React.Component {
 }
 
 class Options extends React.Component {
+    constructor(props){     //props in the constructor function is same as this.props in the render function.
+        super(props);       //react component constructor.
+
+        this.handleRemoveAll = this.handleRemoveAll.bind(this);     //whenever we use handleRemoveAll func down below, we won't need to bind it again and again. so this is way more efficient.
+    }
     handleRemoveAll(){
+        console.log(this.props.options);
+        
         alert("remove all button clicked!");        
     }
     render(){        
