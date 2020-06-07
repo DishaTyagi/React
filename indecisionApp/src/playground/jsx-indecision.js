@@ -34,7 +34,7 @@ const onMakeDecision = () => {
     //find the option that was selected and print it to the user
 
     //generate a random number
-    const randomNum = Math.floor(Math.random() * app.options.length);        //returns number between 0 and 1
+    const randomNum = Math.floor(Math.random() * app.options.length);        //generates number between 0 and 1
     const option = app.options[randomNum];
     alert(option);
 }

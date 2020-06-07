@@ -6,7 +6,7 @@ class IndecisionApp extends React.Component {
 
         return (
             <div>
-                <Header title={title} subtitle={subtitle} />
+                <Header title={title} subtitle={subtitle} />        {/* this is the instance of Header react component*/}
                 <Action />
                 <Options options={options}/>
                 <AddOption />
@@ -29,42 +29,63 @@ class Header extends React.Component{
 }
 
 class Action extends React.Component {
+    handlePick(){
+        alert('button pressed!');
+    }
     render(){
         return (
             <div>
-                <button>What should I do?</button>
+                <button onClick={this.handlePick}>What should I do?</button>
             </div>
         )
     }
 }
 
 class Options extends React.Component {
+    handleRemoveAll(){
+        alert("remove all button clicked!");        
+    }
     render(){        
         return (
             <div>
-                <p>{this.props.options.length}</p>
-                <p>Options component here.</p>
-                <Option />
+            <button onClick={this.handleRemoveAll}>Remove All</button>
+                {
+                    this.props.options.map((option) => <Option key={option} optionText={option}/>)
+                }
             </div>
         )
     }
 }
 
+
 class Option extends React.Component {
     render(){
         return (
             <div>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;Option component here</p>
+                {this.props.optionText}
             </div>
         )
     }
 }
 
 class AddOption extends React.Component{
+    handleAddOption(e){
+        e.preventDefault();
+        
+        const option = e.target.elements.inputValue.value.trim();   //removes the before and after white spaces from the string.
+
+        if(option){
+            alert(option)
+        }
+        
+    }
     render(){
         return (
             <div>
-                <p>AddOption Component here.</p>
+                <form onSubmit={this.handleAddOption}>
+                    <input type="text" name="inputValue"></input>
+                    <button>Add Option</button>
+                </form>
             </div>
         )
     }
