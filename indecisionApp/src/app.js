@@ -2,7 +2,7 @@ class IndecisionApp extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            options: []
+            options: props.options
         }
         this.handleDeleteAll = this.handleDeleteAll.bind(this);
         this.handlePick = this.handlePick.bind(this);
@@ -42,12 +42,11 @@ class IndecisionApp extends React.Component {
     }
 
     render(){
-        const title = 'Indecision';
         const subtitle = 'Put your life in the hands of the computer';
 
         return (
             <div>
-                <Header title={title} subtitle={subtitle} />        {/* this is the instance of Header react component*/}
+                <Header subtitle={subtitle} />        {/* this is the instance of Header react component*/}
                 <Action hasOptions={this.state.options.length > 0} pickOption={this.handlePick}/>
                 <Options options={this.state.options} handleDeleteOptions={this.handleDeleteAll}/>
                 <AddOption handleAddOption={this.handleAddOption}/>
@@ -56,51 +55,53 @@ class IndecisionApp extends React.Component {
     }
 }
 
-class Header extends React.Component{
-    
-    //with React Components,you must define render
-    render(){       //returns jsx
-        return (
-            <div>
-                <h1>{this.props.title}</h1>
-                <h2>{this.props.subtitle}</h2>
-            </div>
-        );
-    }
+IndecisionApp.defaultProps = {
+    options: []
 }
 
-//if options array has length > 0, then button is active. else it is inactive.
-class Action extends React.Component {
-    render(){
-        return (
-            <div>
-                <button onClick={this.props.pickOption} disabled={!this.props.hasOptions}>What should I do?</button>
-            </div>
-        )
-    }
+//header sfc.
+const Header = (props) => {
+    return (
+        <div>
+            <h1>{props.title}</h1>
+            {props.subtitle && <h2>{props.subtitle}</h2>}
+        </div>
+    );
+};
+
+//provide default title to header IF NOT SPECIFIED. how?
+Header.defaultProps = {        //defaultProps is an object
+    title: 'Indecision'
 }
 
-class Options extends React.Component {
-    render(){        
-        return (
-            <div>
-            <button onClick={this.props.handleDeleteOptions}>Remove All</button>
-                {
-                    this.props.options.map((option) => <Option key={option} optionText={option}/>)
-                }
-            </div>
-        )
-    }
+//Action SFC(stateless functional component)
+const Action = (props) => {
+    return (
+        <div>
+            <button onClick={props.pickOption} disabled={!props.hasOptions}>What should I do?</button>
+        </div>
+    )
 }
 
-class Option extends React.Component {
-    render(){
-        return (
-            <div>
-                {this.props.optionText}
-            </div>
-        )
-    }
+//Options SFC
+const Options = (props) => {
+    return (
+        <div>
+        <button onClick={props.handleDeleteOptions}>Remove All</button>
+            {
+                props.options.map((option) => <Option key={option} optionText={option}/>)
+            }
+        </div>
+    )
+}
+
+//Option SFC
+const Option = (props) => {
+    return (
+        <div>
+            {props.optionText}
+        </div>
+    )
 }
 
 class AddOption extends React.Component{

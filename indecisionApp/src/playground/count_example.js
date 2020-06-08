@@ -1,20 +1,17 @@
 class Counter extends React.Component {
     constructor(props){
         super(props);
+        //component state
+        this.state={
+            count: props.count
+        };
         this.handleAddOne = this.handleAddOne.bind(this);
         this.handleMinusOne = this.handleMinusOne.bind(this);
         this.handleReset = this.handleReset.bind(this);
-
-        //component state
-        this.state={
-            count: 0
-        };
-
     }
-    handleAddOne(){
-        // this.state.count = this.state.count + 1;
-        // console.log(this.state);        //incrementing but not changing the value of state in browser. to do that, use fn setState()
-    this.setState((prevState) => {     {/* prevstate is an object here */}
+
+    handleAddOne(){        
+        this.setState((prevState) => {     {/* prevstate is an object here */}
             return {
                 count: prevState.count + 1      
             }
@@ -47,6 +44,10 @@ class Counter extends React.Component {
             </div>
         )
     }
+}
+
+Counter.defaultProps = {
+    count: 0        //if reactDOM render contains <Counter count={-10}/> then count is set to -10 else default value is set to 0 here.
 }
 
 ReactDOM.render(<Counter />, document.getElementById('appDiv'));
