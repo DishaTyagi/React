@@ -17,10 +17,11 @@ var IndecisionApp = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (IndecisionApp.__proto__ || Object.getPrototypeOf(IndecisionApp)).call(this, props));
 
         _this.state = {
-            options: ['thing one', 'thing two', 'thing three']
+            options: []
         };
         _this.handleDeleteAll = _this.handleDeleteAll.bind(_this);
         _this.handlePick = _this.handlePick.bind(_this);
+        _this.handleAddOption = _this.handleAddOption.bind(_this);
         return _this;
     }
 
@@ -42,12 +43,25 @@ var IndecisionApp = function (_React$Component) {
         value: function handlePick() {
             //randomly pick from options array and alert it.
             var randomOptionIndex = Math.floor(Math.random() * this.state.options.length);
-            console.log('randomOptionIndex- ' + randomOptionIndex);
-
             var randomOption = this.state.options[randomOptionIndex];
-            console.log('randomOption- ' + randomOption);
-
             alert(randomOption);
+        }
+    }, {
+        key: 'handleAddOption',
+        value: function handleAddOption(option) {
+            //if option already exists, index will be from 0 to length - 1. if not present, returns -1.
+            if (!option) {
+                //means there's an empty string.
+                return 'Enter valid option';
+            } else if (this.state.options.indexOf(option) > -1) {
+                //already exists.
+                return 'This option already exists!';
+            }
+            this.setState(function (prevState) {
+                return {
+                    options: prevState.options.concat(option) //concat returns a new array. push changes the original array.
+                };
+            });
         }
     }, {
         key: 'render',
@@ -62,7 +76,7 @@ var IndecisionApp = function (_React$Component) {
                 '        ',
                 React.createElement(Action, { hasOptions: this.state.options.length > 0, pickOption: this.handlePick }),
                 React.createElement(Options, { options: this.state.options, handleDeleteOptions: this.handleDeleteAll }),
-                React.createElement(AddOption, null)
+                React.createElement(AddOption, { handleAddOption: this.handleAddOption })
             );
         }
     }]);
@@ -147,17 +161,6 @@ var Options = function (_React$Component4) {
 
     _createClass(Options, [{
         key: 'render',
-
-        // constructor(props){     //props in the constructor function is same as this.props in the render function.
-        //     super(props);       //react component constructor.
-
-        //     this.handleRemoveAll = this.handleRemoveAll.bind(this);     //whenever we use handleRemoveAll func down below, we won't need to bind it again and again. so this is way more efficient.
-        // }
-        // handleRemoveAll(){
-        //     console.log(this.props.options);
-
-        //     alert("remove all button clicked!");        
-        // }
         value: function render() {
             return React.createElement(
                 'div',
@@ -203,10 +206,16 @@ var Option = function (_React$Component5) {
 var AddOption = function (_React$Component6) {
     _inherits(AddOption, _React$Component6);
 
-    function AddOption() {
+    function AddOption(props) {
         _classCallCheck(this, AddOption);
 
-        return _possibleConstructorReturn(this, (AddOption.__proto__ || Object.getPrototypeOf(AddOption)).apply(this, arguments));
+        var _this6 = _possibleConstructorReturn(this, (AddOption.__proto__ || Object.getPrototypeOf(AddOption)).call(this, props));
+
+        _this6.handleAddOption = _this6.handleAddOption.bind(_this6);
+        _this6.state = {
+            error: undefined
+        };
+        return _this6;
     }
 
     _createClass(AddOption, [{
@@ -215,10 +224,13 @@ var AddOption = function (_React$Component6) {
             e.preventDefault();
 
             var option = e.target.elements.inputValue.value.trim(); //removes the before and after white spaces from the string.
-
-            if (option) {
-                alert(option);
-            }
+            var error = this.props.handleAddOption(option); //this keyword is used here inside this method. so include it in the construtor function.
+            //treat error as the new state for AddOption.
+            this.setState(function () {
+                return {
+                    error: error
+                };
+            });
         }
     }, {
         key: 'render',
@@ -226,6 +238,11 @@ var AddOption = function (_React$Component6) {
             return React.createElement(
                 'div',
                 null,
+                this.state.error ? React.createElement(
+                    'p',
+                    null,
+                    this.state.error
+                ) : React.createElement('p', null),
                 React.createElement(
                     'form',
                     { onSubmit: this.handleAddOption },
