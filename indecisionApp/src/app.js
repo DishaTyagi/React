@@ -63,7 +63,7 @@ class IndecisionApp extends React.Component {
 
         return (
             <div>
-                <Header subtitle={subtitle} />        {/* this is the instance of Header react component*/}
+                <Header subtitle={subtitle} />
                 <Action 
                     hasOptions={this.state.options.length > 0} 
                     pickOption={this.handlePick}
@@ -173,5 +173,4 @@ class AddOption extends React.Component{
         )
     }
 }
-
 ReactDOM.render(<IndecisionApp />, document.getElementById('appDiv'));
