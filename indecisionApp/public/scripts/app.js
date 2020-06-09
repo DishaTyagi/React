@@ -27,6 +27,33 @@ var Counter = function (_React$Component) {
     }
 
     _createClass(Counter, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            //2. render the updated value of state from the local storage.
+            var count = parseInt(localStorage.getItem('count'), 10);
+            if (!isNaN(count)) {
+                //NR tho.
+                this.setState(function () {
+                    return { count: count };
+                });
+            }
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevState) {
+            //1. store the updated value in the local storage.
+            if (prevState.count !== this.state.count) {
+                var countVal = this.state.count;
+                localStorage.setItem('count', countVal);
+                console.log("componentDidUpdate!");
+            }
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            console.log("componentWillUnmount");
+        }
+    }, {
         key: 'handleAddOne',
         value: function handleAddOne() {
             this.setState(function (prevState) {
