@@ -7,20 +7,20 @@ class IndecisionApp extends React.Component {
         this.handleDeleteAll = this.handleDeleteAll.bind(this);
         this.handlePick = this.handlePick.bind(this);
         this.handleAddOption = this.handleAddOption.bind(this);
+        this.handleDeleteOption = this.handleDeleteOption.bind(this);
     }
 
-    //when we want to update state options, we have to code functions in the parent component and pass those functions as props to the other sibling component
     //func for removeAll in the Options component
-    handleDeleteAll(){
-        this.setState(() => {
-            return {
-                options: []
-            }
-        })
+    handleDeleteAll(){       
+        this.setState(() => ({ options: [] }))
     }
-
+    //to delete a single option
+    handleDeleteOption(optionToRemove){
+        this.setState((prevState) => ({
+            options: prevState.options.filter((option) => optionToRemove !== option )
+        }))        
+    }
     handlePick(){
-        //randomly pick from options array and alert it.
         const randomOptionIndex = Math.floor(Math.random() * this.state.options.length);        
         const randomOption = this.state.options[randomOptionIndex];        
         alert(randomOption)
@@ -34,11 +34,7 @@ class IndecisionApp extends React.Component {
         else if(this.state.options.indexOf(option) > -1){    //already exists.
             return 'This option already exists!';
         }
-        this.setState((prevState) => {
-            return {
-                options: prevState.options.concat(option)  //concat returns a new array. push changes the original array.
-            }
-        })    
+        this.setState((prevState) => ({options: prevState.options.concat(option)}))     //concat returns a new array.
     }
 
     render(){
@@ -47,8 +43,15 @@ class IndecisionApp extends React.Component {
         return (
             <div>
                 <Header subtitle={subtitle} />        {/* this is the instance of Header react component*/}
-                <Action hasOptions={this.state.options.length > 0} pickOption={this.handlePick}/>
-                <Options options={this.state.options} handleDeleteOptions={this.handleDeleteAll}/>
+                <Action 
+                    hasOptions={this.state.options.length > 0} 
+                    pickOption={this.handlePick}
+                />
+                <Options 
+                    options={this.state.options} 
+                    handleDeleteOptions={this.handleDeleteAll}
+                    handleDeleteOption = {this.handleDeleteOption}
+                />
                 <AddOption handleAddOption={this.handleAddOption}/>
             </div>
         )
@@ -87,9 +90,18 @@ const Action = (props) => {
 const Options = (props) => {
     return (
         <div>
-        <button onClick={props.handleDeleteOptions}>Remove All</button>
+            <button 
+                onClick={props.handleDeleteOptions}>
+                Remove All
+            </button>
             {
-                props.options.map((option) => <Option key={option} optionText={option}/>)
+                props.options.map((option) => (
+                    <Option 
+                        key={option} 
+                        optionText={option}
+                        handleDeleteOption={props.handleDeleteOption}
+                    />
+                ))
             }
         </div>
     )
@@ -100,6 +112,12 @@ const Option = (props) => {
     return (
         <div>
             {props.optionText}
+            <button 
+                onClick={() => {
+                    props.handleDeleteOption(props.optionText)
+                }}>
+                remove
+            </button>
         </div>
     )
 }
@@ -108,6 +126,7 @@ class AddOption extends React.Component{
     constructor(props){
         super(props);
         this.handleAddOption = this.handleAddOption.bind(this);
+        // this.handleSubmit = this.handleSubmit.bind(this)
         this.state = {
             error: undefined,
         }
@@ -118,19 +137,18 @@ class AddOption extends React.Component{
         const option = e.target.elements.inputValue.value.trim();   //removes the before and after white spaces from the string.
         const error = this.props.handleAddOption(option) ;  //this keyword is used here inside this method. so include it in the construtor function.
         //treat error as the new state for AddOption.
-        this.setState(() => {
-            return {
-                error: error,
-            }
-        })
+        this.setState(() => ({error: error}))        
     }
+    // handleSubmit(){
+    //     this.inputValue.value = '';
+    // }
     render(){
         return (
             <div>
                 {this.state.error ? <p>{this.state.error}</p> : <p></p>}
                 <form onSubmit={this.handleAddOption}>
                     <input type="text" name="inputValue"></input>
-                    <button>Add Option</button>
+                    <button >Add Option</button>
                 </form>
             </div>
         )
