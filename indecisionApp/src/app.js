@@ -2,14 +2,35 @@ class IndecisionApp extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            options: props.options
+            options: []
         }
         this.handleDeleteAll = this.handleDeleteAll.bind(this);
         this.handlePick = this.handlePick.bind(this);
         this.handleAddOption = this.handleAddOption.bind(this);
         this.handleDeleteOption = this.handleDeleteOption.bind(this);
     }
-
+    componentDidMount(){
+        try{
+            //represent the options in array format. So parse it.
+            const json = localStorage.getItem('options');
+            const options = JSON.parse(json);
+            if(options){    //if options are not null
+                this.setState(() => ({ options: options }))
+            }
+        }catch(e){
+            //do nothing.
+        }
+    }
+    componentDidUpdate(prevProps, prevState){
+        //don't show update when the length remains same. when RemoveAll is clicked despite the options empty array, we don't want this update function to run.        
+        if(prevState.options.length !== this.state.options.length){
+            const json = JSON.stringify(this.state.options);
+            localStorage.setItem('options', json)
+        }
+    }
+    componentWillUnmount(){
+        console.log('componentWillUnmount!');        
+    }
     //func for removeAll in the Options component
     handleDeleteAll(){       
         this.setState(() => ({ options: [] }))
@@ -58,10 +79,6 @@ class IndecisionApp extends React.Component {
     }
 }
 
-IndecisionApp.defaultProps = {
-    options: []
-}
-
 //header sfc.
 const Header = (props) => {
     return (
@@ -72,7 +89,7 @@ const Header = (props) => {
     );
 };
 
-//provide default title to header IF NOT SPECIFIED. how?
+//provide default title to header IF NOT SPECIFIED.
 Header.defaultProps = {        //defaultProps is an object
     title: 'Indecision'
 }
@@ -94,6 +111,7 @@ const Options = (props) => {
                 onClick={props.handleDeleteOptions}>
                 Remove All
             </button>
+            {props.options.length === 0 && <p>No option added yet.</p>}      {/*if options array is empty*/}
             {
                 props.options.map((option) => (
                     <Option 
@@ -126,7 +144,6 @@ class AddOption extends React.Component{
     constructor(props){
         super(props);
         this.handleAddOption = this.handleAddOption.bind(this);
-        // this.handleSubmit = this.handleSubmit.bind(this)
         this.state = {
             error: undefined,
         }
@@ -136,12 +153,14 @@ class AddOption extends React.Component{
         
         const option = e.target.elements.inputValue.value.trim();   //removes the before and after white spaces from the string.
         const error = this.props.handleAddOption(option) ;  //this keyword is used here inside this method. so include it in the construtor function.
-        //treat error as the new state for AddOption.
-        this.setState(() => ({error: error}))        
+        this.setState(() => (
+            {
+                error: error
+            }
+        ))   
+        e.target.elements.inputValue.value = '';    //clears the input       
     }
-    // handleSubmit(){
-    //     this.inputValue.value = '';
-    // }
+    
     render(){
         return (
             <div>
