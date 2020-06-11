@@ -3,7 +3,6 @@ class Person {
         this.name = name;       //this refers to the current instance        
         this.age = age
     }
-
     //method
     getGreeting(){
         // return "hella " + this.name + "!";
@@ -18,7 +17,6 @@ class Student extends Person{
     constructor(name, age, major){
        //call person constructor to take the same values
         super(name, age);
-
         this.major = major
     }
 
@@ -45,7 +43,7 @@ class Student extends Person{
 
         let description = super.getDescription();        
         if(this.hasMajor()){
-            description += ` thier major is ${this.major}`
+            description += ` their major is ${this.major}`
         }
         return description;
     }
@@ -63,11 +61,9 @@ class Traveler extends Person{
         if(this.homeLocation){
             greeting += ` and I live in ${this.homeLocation}`
         }
-
         return greeting;
     }
 }
-
 
 const me = new Traveler('Disha Tyagi', 21, 'Ghaziabad');   
 console.log(me.getGreeting());

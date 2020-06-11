@@ -1,14 +1,10 @@
 import React from 'react';
 
 class AddOption extends React.Component{
-    constructor(props){
-        super(props);
-        this.handleAddOption = this.handleAddOption.bind(this);
-        this.state = {
-            error: undefined,
-        }
+    state = {
+        error: undefined,
     }
-    handleAddOption(e){
+    handleAddOption = (e) => {          //handleAddOption being a class property does not need to bind in the constructor. if it was a regular fn, then binding was necessary,
         e.preventDefault();
         
         const option = e.target.elements.inputValue.value.trim();   
