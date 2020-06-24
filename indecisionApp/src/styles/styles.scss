@@ -1,0 +1,5 @@
+$brand-color: blue;         //variable is created using $<variableName>
+
+* {
+    color: $brand-color;
+}
