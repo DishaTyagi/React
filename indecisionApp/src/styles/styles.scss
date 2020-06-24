@@ -1,5 +1,4 @@
-$brand-color: blue;         //variable is created using $<variableName>
+@import './base/base';
+//while including partial file like _base.scss, this is the syntax where at the end, _ and file ext. is ignored
 
-* {
-    color: $brand-color;
-}
+@import './components/header';
