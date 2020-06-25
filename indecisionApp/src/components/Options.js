@@ -4,7 +4,9 @@ import {Option} from './Option'
 const Options = (props) => (
     <div>
         <button 
-            onClick={props.handleDeleteOptions}>
+            onClick={props.handleDeleteOptions}
+            className="button button--link"
+        >
             Remove All
         </button>
         {props.options.length === 0 && <p>No option added yet.</p>}      {/*if options array is empty*/}

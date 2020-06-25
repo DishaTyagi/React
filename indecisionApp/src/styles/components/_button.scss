@@ -1,0 +1,33 @@
+.big-button {
+    background: $purple;
+    border: none;
+    border-bottom: 0.6rem solid darken($color: $purple, $amount: 10%);        //1.width  2.type of border  3.color of border-> darken(color to be darken, percantage to which it has to be darkened.
+    color: white;
+    font-weight: bold;
+    font-size: $l-size;
+    width: 100%;
+    margin-bottom: $xl-size;
+    padding: 2.4rem;
+
+}
+
+.big-button:disabled {      //disabled is pseudo class
+    opacity: 0.5;
+}
+
+//button class for remaining buttons -> remove, add option
+.button{
+    background: $purple;
+    border: none;
+    border-bottom: .3rem darken($color: $purple, $amount: 10%);
+    color: white;
+    font-weight: 500;
+    padding: $s-size;
+}
+
+.button--link {     //-- is used in case of modifier.
+    background: none;
+    border: none;
+    color: $off-white;
+    padding: 0;
+}
