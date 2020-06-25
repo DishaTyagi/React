@@ -25,7 +25,7 @@
     padding: $s-size;
 }
 
-.button--link {     //-- is used in case of modifier.
+.button--link {     //  -- is modifier selector whereas __ is element selector.
     background: none;
     border: none;
     color: $off-white;

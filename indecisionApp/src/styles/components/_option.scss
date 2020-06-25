@@ -1,0 +1,14 @@
+.option{            //space b/w option and rm btn.
+    //arranged lexicographically (just like that)
+    border-bottom: 1px solid lighten($color: $light-blue, $amount: 10%);
+    display: flex;
+    justify-content: space-between;
+    padding: $l-size $m-size;    
+}
+
+.option__text {     //option is block, text is the element in BEM.
+    color: white;
+    font-weight: 500;
+    font-size: 2rem;
+    margin: 0;
+}

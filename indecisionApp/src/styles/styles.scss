@@ -3,4 +3,7 @@
 //while including partial file like _base.scss, this is the syntax where at the end, _ and file ext. is ignored
 @import './components/button';
 @import './components/container';
+@import './components/widget';
 @import './components/header';
+@import './components/option';
+@import './components/add-option';
